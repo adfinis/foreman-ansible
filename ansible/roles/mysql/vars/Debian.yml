@@ -1,0 +1,15 @@
+---
+mysql_pkg:
+  - mysql-server
+  - mysql-client
+  - python-mysqldb
+
+mysql_service: mysql
+
+mysql_root_user_hosts:
+  - localhost
+  - 127.0.0.1
+  - "::1"
+  - "{{ ansible_hostname }}"
+
+mysql_anon_user_hosts: []

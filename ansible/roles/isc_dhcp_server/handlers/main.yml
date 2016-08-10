@@ -1,0 +1,3 @@
+---
+- name: restart isc-dhcp-server
+  service: name="{{ isc_dhcp_server_service }}" state=restarted

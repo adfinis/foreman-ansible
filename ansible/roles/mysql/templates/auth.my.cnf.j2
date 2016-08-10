@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+[mysql]
+prompt="MySQL: \\u [\\d]> "
+
+[client]
+user = {{ mysql_root_username }}
+password = {{ mysql_root_password }}

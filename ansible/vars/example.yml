@@ -1,0 +1,23 @@
+---
+mysql_databases: 
+  - name: foreman
+    collation: utf8_unicode_ci
+    encoding: utf8
+
+mysql_users: 
+  - name: foreman
+    host: localhost
+    password: supersecret$42
+    priv: "foreman.*:ALL"
+
+isc_dhcp_server_subnet:
+  - netaddress: 192.168.121.0
+    netmask: 255.255.255.0
+    gateway: 192.168.121.1
+    domain: lab.local
+    domain_search: lab.local
+    dns: 192.168.121.1
+    range: 192.168.121.20 192.168.121.100
+
+foreman_db_username: foreman
+foreman_db_password: supersecret$42

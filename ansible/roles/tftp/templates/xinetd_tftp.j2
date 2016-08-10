@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+service tftp
+{
+        socket_type             = {{ tftp_xinetd_socket_type }}
+        protocol                = {{ tftp_xinetd_protocol }}
+        wait                    = {{ tftp_xinetd_wait }}
+        user                    = {{ tftp_xinetd_service_user }}
+        server                  = {{ tftp_xinetd_server }}
+        server_args             = {{ tftp_xinetd_server_args }}
+        disable                 = {{ tftp_xinetd_disable }}
+}

@@ -1,0 +1,3 @@
+---
+sqlite_db_dir: /var/lib/sqlite
+sqlite_db_create_dir: false

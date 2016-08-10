@@ -1,0 +1,27 @@
+# {{ ansible_managed }}
+
+upstream foreman {
+    server localhost:3000;
+}
+
+server {
+    listen       80 default_server;
+    server_name  {{ nginx_server_name }};
+
+    access_log  /var/log/nginx/foreman.access.log  main;
+    error_log   /var/log/nginx/foreman.error.log;
+
+    error_page  404              /404.html;
+    location = /404.html {
+        root   /usr/share/nginx/html;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    location / {
+        proxy_pass http://foreman;
+    }
+}

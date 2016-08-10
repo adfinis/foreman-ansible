@@ -1,0 +1,509 @@
+---
+foreman:
+  auth:
+    url: "{{ foreman_yml_api_url }}"
+    user: {{ foreman_yml_api_username }}
+    pass: {{ foreman_yml_api_password }}
+
+  cleanup-architecture:
+    - name: i386
+
+  cleanup-medium:
+    - name: CentOS mirror
+    - name: CoreOS mirror
+    - name: Debian mirror
+    - name: Fedora mirror
+    - name: FreeBSD mirror
+    - name: OpenSUSE mirror
+    - name: Ubuntu mirror
+
+  cleanup-partition-table:
+    - name: AutoYaST entire SCSI disk
+    - name: AutoYaST entire virtual disk
+    - name: AutoYaST LVM
+    - name: CoreOS default fake
+    - name: FreeBSD
+    - name: Jumpstart default
+    - name: Jumpstart mirrored
+    - name: Junos default fake
+    - name: Kickstart default
+    - name: Preseed default
+    - name: Preseed custom LVM
+
+  cleanup-provisioning-template:
+    - name: Alterator default
+    - name: Alterator default finish
+    - name: Alterator default PXELinux
+    - name: AutoYaST default
+    - name: AutoYaST default PXELinux
+    - name: AutoYaST SLES default
+    - name: CoreOS provision
+    - name: CoreOS PXELinux
+    - name: FreeBSD (mfsBSD) finish
+    - name: FreeBSD (mfsBSD) provision
+    - name: FreeBSD (mfsBSD) PXELinux
+    - name: Grubby default
+    - name: Jumpstart default
+    - name: Jumpstart default finish
+    - name: Jumpstart default PXEGrub
+    - name: Junos default finish
+    - name: Junos default SLAX
+    - name: Junos default ZTP config
+    - name: Kickstart default
+    - name: Kickstart default finish
+    - name: Kickstart default iPXE
+    - name: Kickstart default PXELinux
+    - name: Kickstart default user data
+    - name: Kickstart RHEL default
+    - name: Preseed default
+    - name: Preseed default finish
+    - name: Preseed default iPXE
+    - name: Preseed default PXELinux
+    - name: Preseed default user data
+    - name: PXELinux default memdisk
+    - name: UserData default
+    - name: WAIK default PXELinux
+    - name: alterator_pkglist
+    - name: coreos_cloudconfig
+    - name: epel
+    - name: fix_hosts
+    - name: freeipa_register
+    - name: http_proxy
+    - name: kickstart_networking_setup
+    - name: puppet.conf
+    - name: redhat_register
+    - name: saltstack_minion
+
+  setting:
+    - name: safemode_render
+      value: false
+
+  architecture:
+    - name: x86_64
+
+  environment:
+    - name: production
+    - name: development
+
+  smart-proxy:
+    - name: Smart Proxy
+      url: "http://localhost:8000/"
+
+  domain:
+    - name: lab.local
+      fullname:
+      dns-proxy:
+      parameters:
+
+  subnet:
+    - name: lab
+      network: 192.168.122.0
+      mask: 255.255.255.0
+      gateway: 192.168.122.1
+      dns-primary: 192.168.122.1
+      dns-secondary: 8.8.8.8
+      ipam: DHCP
+      from: 192.168.122.10
+      to: 192.168.122.50
+      vlanid:
+      domain:
+        - name: lab.local
+      dhcp-proxy: Smart Proxy
+      tftp-proxy: Smart Proxy
+      dns-proxy:
+      boot-mode: DHCP
+
+  model:
+    - name: Virtual Machine
+      info:
+      vendor-class:
+      hardware-model:
+
+  medium:
+    - name: Ubuntu Mirror
+      path: "http://archive.ubuntu.com/ubuntu"
+      os-family: Debian
+
+  partition-table:
+    - name: Ubuntu Default
+      layout: |
+              <%#
+              kind: ptable
+              name: Ubuntu Default
+              oses:
+              - Debian 6.0
+              - Debian 7.
+              - Debian 8.
+              - Ubuntu 10.04
+              - Ubuntu 12.04
+              - Ubuntu 13.04
+              - Ubuntu 14.04
+              %>
+               
+              <% if @host.params['install-disk'] -%>
+              d-i partman-auto/disk string <%= @host.params['install-disk'] %>
+              <% else -%>
+              d-i partman-auto/disk string /dev/sda /dev/vda /dev/xvda
+              <% end -%>
+              
+              ### Partitioning
+              # The presently available methods are: "regular", "lvm" and "crypto"
+              <% if @host.params['partitioning-method'] -%>
+              d-i partman-auto/method string <%= @host.params['partitioning-method'] %>
+              <% else -%>
+              d-i partman-auto/method string regular
+              <% end -%>
+              
+              # If one of the disks that are going to be automatically partitioned
+              # contains an old LVM configuration, the user will normally receive a
+              # warning. This can be preseeded away...
+              d-i partman-lvm/device_remove_lvm boolean true
+              # The same applies to pre-existing software RAID array:
+              d-i partman-md/device_remove_md boolean true
+              # And the same goes for the confirmation to write the lvm partitions.
+              d-i partman-lvm/confirm boolean true
+              d-i partman-lvm/confirm_nooverwrite boolean true
+              
+              <% if @host.params['partitioning-method'] && @host.params['partitioning-method'] == 'lvm' -%>
+              # For LVM partitioning, you can select how much of the volume group to use
+              # for logical volumes.
+              d-i partman-auto-lvm/guided_size string max
+              <% end -%>
+              
+              # You can choose one of the three predefined partitioning recipes:
+              # - atomic: all files in one partition
+              # - home:   separate /home partition
+              # - multi:  separate /home, /usr, /var, and /tmp partitions
+              <% if @host.params['partitioning-recipe'] -%>
+              d-i partman-auto/choose_recipe select <%= @host.params['partitioning-recipe'] %>
+              <% else -%>
+              d-i partman-auto/choose_recipe select atomic
+              <% end -%>
+              
+              # If you just want to change the default filesystem from ext3 to something
+              # else, you can do that without providing a full recipe.
+              <% if @host.params['partitioning-filesystem'] -%>
+              d-i partman/default_filesystem string <%= @host.params['partitioning-filesystem'] %>
+              <% end %>
+              
+              # This makes partman automatically partition without confirmation, provided
+              # that you told it what to do using one of the methods above.
+              d-i partman/confirm_write_new_label boolean true
+              d-i partman/choose_partition select finish
+              d-i partman/confirm boolean true
+              d-i partman/confirm_nooverwrite boolean true
+      snippet: false
+      audit-comment: initial import
+      locked: false
+      os-family: Debian
+
+  provisioning-template:
+    - name: Ubuntu PXE
+      template: |
+                <%#
+                kind: PXELinux
+                name: Ubuntu PXE
+                oses:
+                - Debian 6.0
+                - Debian 7.
+                - Debian 8.
+                - Ubuntu 10.04
+                - Ubuntu 12.04
+                - Ubuntu 13.04
+                - Ubuntu 14.04
+                %>
+                
+                <% if @host.operatingsystem.name == 'Debian' -%>
+                <% keyboard_params = "auto=true domain=#{@host.domain}" -%>
+                <% else -%>
+                <% keyboard_params = 'console-setup/ask_detect=false console-setup/layout=USA console-setup/variant=USA keyboard-configuration/layoutcode=us localechooser/translation/warn-light=true localechooser/translation/warn-severe=true' -%>
+                <% end -%>
+                DEFAULT linux
+                
+                LABEL linux
+                    KERNEL <%= @kernel %>
+                    APPEND initrd=<%= @initrd %> interface=auto url=<%= foreman_url('provision')%> ramdisk_size=10800 root=/dev/rd/0 rw auto hostname=<%= @host.name %> <%= keyboard_params %> locale=<%= @host.params['lang'] || 'en_US' %>
+                    IPAPPEND 2
+      snippet: false
+      audit-comment: initial import
+      template-kind-id: 1
+      template-combination-attribute:
+        - hostgroup:
+          environment:
+      os:
+        - name: Ubuntu 14.04 LTS
+      locked: false
+    - name: Ubuntu Preseed
+      template: |
+                <%#
+                kind: provision
+                name: Ubuntu Preseed
+                oses:
+                - Debian 6.0
+                - Debian 7.
+                - Debian 8.
+                - Ubuntu 10.04
+                - Ubuntu 12.04
+                - Ubuntu 13.04
+                - Ubuntu 14.04
+                %>
+                <%
+                  # safemode renderer does not support unary negation
+                  pm_set = @host.puppetmaster.empty? ? false : true
+                  proxy_string = @host.params['http-proxy'] ? " http://#{@host.params['http-proxy']}:#{@host.params['http-proxy-port']}" : ''
+                  puppet_enabled = pm_set || @host.params['force-puppet'] && @host.params['force-puppet'] == 'true'
+                  salt_enabled = @host.params['salt_master'] ? true : false
+                %>
+                # Locale
+                d-i debian-installer/locale string <%= @host.params['lang'] || 'en_US' %>
+                # country and keyboard settings are automatic. Keep them ...
+                # ... for wheezy and newer:
+                d-i keyboard-configuration/xkb-keymap seen true
+                # ... for squeeze and older:
+                d-i console-keymaps-at/keymap seen true
+                
+                <% subnet = @host.subnet -%>
+                <% if subnet.respond_to?(:dhcp_boot_mode?) -%>
+                  <% dhcp = subnet.dhcp_boot_mode? && !@static -%>
+                <% else -%>
+                  <% dhcp = !@static -%>
+                <% end -%>
+                <% unless dhcp -%>
+                # Static network configuration.
+                d-i preseed/early_command string /bin/killall.sh; /bin/netcfg
+                d-i netcfg/disable_dhcp boolean true
+                d-i netcfg/get_ipaddress string <%= @host.ip %>
+                d-i netcfg/get_netmask string <%= subnet.mask %>
+                d-i netcfg/get_nameservers string <%= [subnet.dns_primary,subnet.dns_secondary].reject{|n| n.blank?}.join(' ') %>
+                d-i netcfg/get_gateway string <%= subnet.gateway %>
+                d-i netcfg/confirm_static boolean true
+                <% end -%>
+                
+                # Network configuration
+                d-i netcfg/choose_interface select auto
+                d-i netcfg/get_hostname string <%= @host %>
+                d-i netcfg/get_domain string <%= @host.domain %>
+                d-i netcfg/wireless_wep string
+                
+                d-i hw-detect/load_firmware boolean true
+                
+                # Mirror settings
+                d-i mirror/country string manual
+                d-i mirror/http/hostname string <%= @preseed_server %>
+                d-i mirror/http/directory string <%= @preseed_path %>
+                d-i mirror/http/proxy string<%= proxy_string %>
+                d-i mirror/codename string <%= @host.operatingsystem.release_name %>
+                d-i mirror/suite string <%= @host.operatingsystem.release_name %>
+                d-i mirror/udeb/suite string <%= @host.operatingsystem.release_name %>
+                
+                # Time settings
+                d-i clock-setup/utc boolean true
+                d-i time/zone string <%= @host.params['time-zone'] || 'UTC' %>
+                
+                # NTP
+                d-i clock-setup/ntp boolean true
+                d-i clock-setup/ntp-server string <%= @host.params['ntp-server'] || '0.debian.pool.ntp.org' %>
+                
+                # Set alignment for automatic partitioning
+                # Choices: cylinder, minimal, optimal
+                #d-i partman/alignment select cylinder
+                
+                <%= @host.diskLayout %>
+                
+                # Install different kernel
+                #d-i base-installer/kernel/image string linux-server
+                
+                # User settings
+                d-i passwd/root-password-crypted password <%= root_pass %>
+                user-setup-udeb passwd/root-login boolean true
+                d-i passwd passwd/make-user boolean false
+                user-setup-udeb passwd/make-user boolean false
+                
+                <% repos = 0 %>
+                <% if puppet_enabled && @host.params['enable-puppetlabs-repo'] && @host.params['enable-puppetlabs-repo'] == 'true' -%>
+                # Puppetlabs products
+                d-i apt-setup/local<%= repos %>/repository string \
+                      http://apt.puppetlabs.com <%= @host.operatingsystem.release_name %> main
+                d-i apt-setup/local<%= repos %>/comment string Puppetlabs products
+                d-i apt-setup/local<%= repos %>/source boolean true
+                d-i apt-setup/local<%= repos %>/key string http://apt.puppetlabs.com/pubkey.gpg
+                <% repos += 1 -%>
+                # Puppetlabs dependencies
+                d-i apt-setup/local<%= repos %>/repository string \
+                      http://apt.puppetlabs.com <%= @host.operatingsystem.release_name %> dependencies
+                d-i apt-setup/local<%= repos %>/comment string Puppetlabs dependencies
+                d-i apt-setup/local<%= repos %>/source boolean true
+                d-i apt-setup/local<%= repos %>/key string http://apt.puppetlabs.com/pubkey.gpg
+                <% repos += 1 -%>
+                <% end -%>
+                
+                <% if salt_enabled -%>
+                <% salt_package = 'salt-minion' -%>
+                <% if @host.params['enable-saltstack-repo'] && @host.params['enable-saltstack-repo'] == 'true' -%>
+                <% if @host.operatingsystem.name == 'Debian' -%>
+                d-i apt-setup/local<%= repos %>/repository string http://debian.saltstack.com/debian <%= @host.operatingsystem.release_name %>-saltstack main
+                d-i apt-setup/local<%= repos %>/comment string SaltStack Repository
+                d-i apt-setup/local<%= repos %>/key string http://debian.saltstack.com/debian-salt-team-joehealy.gpg.key
+                <% repos += 1 -%>
+                <% end -%>
+                <% if @host.operatingsystem.name == 'Ubuntu' -%>
+                d-i apt-setup/local<%= repos %>/repository string http://ppa.launchpad.net/saltstack/salt/ubuntu <%= @host.operatingsystem.release_name %> main
+                d-i apt-setup/local<%= repos %>/comment string SaltStack Repository
+                d-i apt-setup/local<%= repos %>/key string http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x4759FA960E27C0A6
+                <% repos += 1 -%>
+                <% end -%>
+                <% end -%>
+                <% else -%>
+                <% salt_package = '' -%>
+                <% end -%>
+                
+                # Install minimal task set (see tasksel --task-packages minimal)
+                tasksel tasksel/first multiselect minimal, ssh-server, openssh-server
+                
+                <% if puppet_enabled %>
+                  <% if @host.operatingsystem.name == 'Ubuntu' and @host.operatingsystem.major.to_i == 10 -%>
+                    <% puppet_package = 'puppet/lucid-backports' -%>
+                d-i apt-setup/backports boolean true
+                  <% else -%>
+                    <% puppet_package = 'puppet' -%>
+                  <% end -%>
+                <% else -%>
+                  <% puppet_package = '' -%>
+                <% end -%>
+                
+                # Install some base packages
+                d-i pkgsel/include string <%= puppet_package %> <%= salt_package %> lsb-release
+                d-i pkgsel/update-policy select unattended-upgrades
+                
+                popularity-contest popularity-contest/participate boolean false
+                
+                # Boot loader settings
+                #grub-pc grub-pc/hidden_timeout boolean false
+                #grub-pc grub-pc/timeout string 10
+                d-i grub-installer/only_debian boolean true
+                d-i grub-installer/with_other_os boolean true
+                <% if @host.params['install-disk'] -%>
+                d-i grub-installer/bootdev string <%= @host.params['install-disk'] %>
+                <% elsif @host.operatingsystem.name == 'Debian' and @host.operatingsystem.major.to_i >= 8 -%>
+                d-i grub-installer/bootdev string default
+                <% end -%>
+                d-i finish-install/reboot_in_progress note
+                
+                d-i preseed/late_command string wget -Y off <%= @static ? "'#{foreman_url('finish')}&static=true'" : foreman_url('finish') %> -O /target/tmp/finish.sh && in-target chmod +x /tmp/finish.sh && in-target /tmp/finish.sh
+      snippet: false
+      audit-comment: initial import
+      template-kind-id: 4
+      template-combination-attribute:
+        - hostgroup:
+          environment:
+      os:
+        - name: Ubuntu 14.04 LTS
+      locked: false
+    - name: Ubuntu Finish
+      template: |
+                <%#
+                kind: finish
+                name: Ubuntu Finish
+                oses:
+                - Debian 6.0
+                - Debian 7.
+                - Debian 8.
+                - Ubuntu 10.04
+                - Ubuntu 12.04
+                - Ubuntu 13.04
+                - Ubuntu 14.04
+                %>
+                <%
+                  # safemode renderer does not support unary negation
+                  pm_set = @host.puppetmaster.empty? ? false : true
+                  puppet_enabled = pm_set || @host.params['force-puppet'] && @host.params['force-puppet'] == 'true'
+                  salt_enabled = @host.params['salt_master'] ? true : false
+                  chef_enabled = @host.respond_to?(:chef_proxy) && @host.chef_proxy
+                %>
+                
+                <% subnet = @host.subnet -%>
+                <% if subnet.respond_to?(:dhcp_boot_mode?) -%>
+                  <% dhcp = subnet.dhcp_boot_mode? && !@static -%>
+                <% else -%>
+                  <% dhcp = !@static -%>
+                <% end -%>
+                <% unless dhcp -%>
+                # host and domain name need setting as these values may have come from dhcp if pxe booting
+                /bin/sed -i "s/^search.*$/search <%= @host.domain %>/g" /etc/resolv.conf
+                /bin/sed -i "s/.*dns-search.*/\tdns-search <%= @host.domain %>/g" /etc/network/interfaces
+                /bin/sed -i "s/^<%= @host.ip %>.*/<%= @host.ip %>\t<%= @host.shortname %>.<%= @host.domain %>\t<%= @host.shortname %>/g" /etc/hosts
+                /bin/echo <%= @host.shortname %> > /etc/hostname
+                <% end -%>
+                <% if puppet_enabled %>
+                cat > /etc/puppet/puppet.conf << EOF
+                <%= snippet 'puppet.conf' %>
+                EOF
+                if [ -f "/etc/default/puppet" ]
+                then
+                /bin/sed -i 's/^START=no/START=yes/' /etc/default/puppet
+                fi
+                /bin/touch /etc/puppet/namespaceauth.conf
+                /usr/bin/puppet agent --enable
+                /usr/bin/puppet agent --config /etc/puppet/puppet.conf --onetime --tags no_such_tag <%= @host.puppetmaster.blank? ? '' : "--server #{@host.puppetmaster}" %> --no-daemonize
+                <% end -%>
+                
+                <% if @host.info['parameters']['realm'] && @host.otp && @host.realm && @host.realm.realm_type == 'FreeIPA' -%>
+                <%= snippet 'freeipa_register' %>
+                <% end -%>
+                
+                <% if salt_enabled %>
+                cat > /etc/salt/minion << EOF
+                <%= snippet 'saltstack_minion' %>
+                EOF
+                # Running salt-call to trigger key signing
+                salt-call --no-color --grains >/dev/null
+                <% end -%>
+                
+                <% if chef_enabled %>
+                <%= respond_to?(:chef_bootstrap) ? chef_bootstrap(@host) : snippet_if_exists("chef-client omnibus bootstrap") %>
+                <% end%>
+                
+                /usr/bin/wget --no-proxy --quiet --output-document=/dev/null --no-check-certificate <%= foreman_url %>
+      snippet: false
+      audit-comment: initial import
+      template-kind-id: 5
+      template-combination-attribute:
+        - hostgroup:
+          environment:
+      os:
+        - name: Ubuntu 14.04 LTS
+      locked: false
+
+  os:
+    - name: Ubuntu
+      major: 14
+      minor: 4
+      description: Ubuntu 14.04 LTS
+      family: Debian
+      release-name: trusty
+      password-hash: SHA512
+      architecture:
+        - name: x86_64
+      provisioning-template:
+        - name: Ubuntu PXE
+        - name: Ubuntu Preseed
+        - name: Ubuntu Finish
+      medium:
+        - name: Ubuntu Mirror
+      partition-table:
+        - name: Ubuntu Default
+      parameters:
+        version: "14.04"
+        codename: "trusty"
+
+  hostgroup:
+    - name: switzerland
+      parent:
+      environment: production
+      os: Ubuntu 14.04 LTS
+      architecture: x86_64
+      medium: Ubuntu Mirror
+      partition-table: Ubuntu Default
+      subnet: lab
+      domain: lab.local
+      parameters:

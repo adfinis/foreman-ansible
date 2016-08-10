@@ -1,0 +1,17 @@
+---
+mysql_pkg:
+  - mariadb-server
+  - mariadb
+  - MySQL-python
+
+mysql_service: mariadb
+
+mysql_root_user_hosts:
+  - localhost
+  - 127.0.0.1
+  - "::1"
+  - "{{ ansible_fqdn }}"
+
+mysql_anon_user_hosts:
+  - localhost
+  - "{{ ansible_fqdn }}"

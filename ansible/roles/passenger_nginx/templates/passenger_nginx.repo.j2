@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+[passenger_nginx]
+name=passenger_nginx
+baseurl={{ passenger_nginx_yum_baseurl }}
+repo_gpgcheck={{ passenger_nginx_yum_repo_gpgcheck }}
+gpgcheck={{ passenger_nginx_yum_gpg }}
+enabled=1
+{% if passenger_nginx_yum_sslverify %}
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+{%- endif %}

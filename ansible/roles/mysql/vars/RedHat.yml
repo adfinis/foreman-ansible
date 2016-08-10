@@ -1,0 +1,16 @@
+---
+mysql_pkg:
+  - mysql-server
+  - mysql
+  - MySQL-python
+
+mysql_service: mysqld
+
+mysql_root_user_hosts:
+  - localhost
+  - 127.0.0.1
+  - "{{ ansible_fqdn }}"
+
+mysql_anon_user_hosts:
+  - localhost
+  - "{{ ansible_fqdn }}"

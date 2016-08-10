@@ -1,0 +1,43 @@
+---
+foreman_proxy_apt_main_baseurl: "http://deb.theforeman.org/"
+foreman_proxy_apt_main_release: stable
+foreman_proxy_apt_main_os_version: "{{ ansible_distribution_release }}"
+foreman_proxy_apt_main_gpg: 1
+foreman_proxy_apt_main_key: "http://deb.theforeman.org/pubkey.gpg"
+
+foreman_proxy_apt_plugins_baseurl: "http://deb.theforeman.org/"
+foreman_proxy_apt_plugins_release: stable
+foreman_proxy_apt_plugins_os_version: plugins
+foreman_proxy_apt_plugins_gpg: 1
+foreman_proxy_apt_plugins_key: "http://deb.theforeman.org/pubkey.gpg"
+
+foreman_proxy_yum_main_baseurl: "http://yum.theforeman.org/releases/latest/el{{ ansible_distribution_major_version }}/$basearch/"
+foreman_proxy_yum_main_gpg: 1
+foreman_proxy_yum_main_key: "http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman"
+
+foreman_proxy_yum_plugins_baseurl: "http://yum.theforeman.org/plugins/latest/el{{ ansible_distribution_major_version }}/$basearch/"
+foreman_proxy_yum_plugins_gpg: 1
+foreman_proxy_yum_plugins_key: "http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman"
+
+foreman_proxy_plugins_repo: true
+
+foreman_proxy_user: foreman-proxy
+foreman_proxy_group: foreman-proxy
+foreman_proxy_port: 8000
+foreman_proxy_protocol: http
+foreman_proxy_bind_host: "{{ ansible_default_ipv4.address }}"
+
+foreman_proxy_foreman_url: "http://127.0.0.1"
+
+foreman_proxy_dhcp: true
+foreman_proxy_dhcp_protocol: http
+foreman_proxy_dhcp_server: 127.0.0.1
+foreman_proxy_dhcp_subnets: "[]"
+foreman_proxy_dhcp_omapi_port: 7911
+
+foreman_proxy_tftp: true
+foreman_proxy_tftp_protocol: http
+foreman_proxy_tftp_dir: /srv/tftp
+foreman_proxy_tftp_pxe_dir:
+  - boot
+  - pxelinux.cfg

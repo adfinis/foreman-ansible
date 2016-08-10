@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+[foreman_plugins]
+name=foreman_plugins
+baseurl={{ foreman_yum_plugins_baseurl }}
+gpgcheck={{ foreman_yum_plugins_gpg }}
+enabled=1

@@ -1,0 +1,10 @@
+---
+foreman:
+  auth:
+    url: "{{ foreman_yml_api_url }}"
+    user: {{ foreman_yml_api_username }}
+    pass: {{ foreman_yml_api_password }}
+
+  setting:
+    - name: safemode_render
+      value: false

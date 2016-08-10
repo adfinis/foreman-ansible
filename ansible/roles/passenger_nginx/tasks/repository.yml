@@ -1,0 +1,37 @@
+---
+- name: install apt-transport-https
+  apt: name="{{ item }}" state=present
+  with_items: "{{ passenger_nginx_apt_https_pkg }}"
+  when: ansible_os_family == "Debian" and passenger_nginx_apt_https
+
+- name: configure passenger nginx apt key
+  apt_key: keyserver="{{ passenger_nginx_apt_key_server }}"
+    id="{{ passenger_nginx_apt_key_id }}" state=present
+  when: ansible_os_family == "Debian" and passenger_nginx_apt_gpg
+
+- name: configure passenger nginx apt repository
+  apt_repository: repo="deb {{ passenger_nginx_apt_baseurl }} {{ passenger_nginx_apt_os_version }} {{ passenger_nginx_apt_release }}"
+    state=present
+  when: ansible_os_family == "Debian"
+
+- name: configure passenger nginx rpm key
+  rpm_key: key="{{ passenger_nginx_yum_key }}" state=present
+  when: ansible_os_family == "RedHat" and passenger_nginx_yum_gpg
+
+- name: configure passenger nginx yum repository
+  template: src=passenger_nginx.repo.j2 dest=/etc/yum.repos.d/passenger_nginx.repo
+  when: ansible_os_family == "RedHat"
+
+- name: configure redhat epel yum repository
+  package: name="https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state=present
+  when: ansible_distribution == "RedHat" and passenger_nginx_epel
+
+- name: configure centos epel yum repository
+  package: name=epel-release state=present
+  when: ansible_distribution == "CentOS" and passenger_nginx_epel
+
+- name: configure epel rpm key
+  rpm_key: key="/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+    state=present
+  when: ansible_os_family == "RedHat" and passenger_nginx_epel

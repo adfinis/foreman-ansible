@@ -1,0 +1,21 @@
+---
+- name: template foreman database.yml
+  template: src=database.yml.j2 dest=/etc/foreman/database.yml backup=yes
+
+- name: set permissions for sqlite directory
+  file: path="{{ foreman_db_sqlite_dir }}" owner=foreman group=foreman
+    mode=0755 state=directory
+  when: foreman_db_adapter == "sqlite3"
+
+- name: rake create foreman database
+  command: "/usr/sbin/foreman-rake db:migrate"
+
+- name: rake seed foreman database
+  command: "/usr/sbin/foreman-rake db:seed"
+
+- name: rake reset foreman admin password
+  command: "/usr/sbin/foreman-rake permissions:reset username=admin password={{ foreman_admin_password }}"
+
+- name: enable foreman service
+  service: name=foreman enabled=yes state=started
+  when: foreman_enable_service

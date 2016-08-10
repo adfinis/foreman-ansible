@@ -1,0 +1,8 @@
+---
+nginx_pkg: nginx
+
+nginx_cfg_dir: /etc/nginx/conf.d
+nginx_default_site:
+  - /etc/nginx/conf.d/default.conf
+
+nginx_user: nginx

@@ -1,0 +1,12 @@
+---
+mysql_pkg:
+  - mysql-server
+  - mysql-client
+  - python-mysqldb
+
+mysql_service: mysql
+
+mysql_root_user_hosts:
+  - localhost
+
+mysql_anon_user_hosts: []

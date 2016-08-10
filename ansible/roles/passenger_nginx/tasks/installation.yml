@@ -1,0 +1,7 @@
+---
+- name: install passenger nginx
+  package: name="{{ item }}" state=present
+  with_items: "{{ passenger_nginx_pkg }}"
+
+- name: enable passenger nginx service
+  service: name=nginx enabled=yes

@@ -1,0 +1,22 @@
+---
+passenger_nginx_epel: true
+
+passenger_nginx_apt_https: true
+passenger_nginx_apt_https_pkg:
+  - apt-transport-https
+  - ca-certificates
+
+passenger_nginx_apt_baseurl: "https://oss-binaries.phusionpassenger.com/apt/passenger"
+passenger_nginx_apt_os_version: "{{ ansible_distribution_release }}"
+passenger_nginx_apt_release: main
+passenger_nginx_apt_gpg: 1
+passenger_nginx_apt_key_server: "keyserver.ubuntu.com"
+passenger_nginx_apt_key_id: "561f9b9cac40b2f7"
+
+passenger_nginx_yum_baseurl: "https://oss-binaries.phusionpassenger.com/yum/passenger/el/$releasever/$basearch"
+passenger_nginx_yum_gpg: 0
+passenger_nginx_yum_key: "https://packagecloud.io/gpg.key"
+passenger_nginx_yum_sslverify: true
+passenger_nginx_yum_repo_gpgcheck: 0
+
+passenger_nginx_server_name: "{{ ansible_fqdn }}"

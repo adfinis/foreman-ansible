@@ -1,0 +1,10 @@
+---
+foreman_proxy_pkg:
+  - foreman-proxy
+  - wget
+
+foreman_proxy_extra_repos_pkg: []
+
+foreman_proxy_dhcp_config_dir: /etc/dhcp
+foreman_proxy_dhcp_config: /etc/dhcp/dhcpd.conf
+foreman_proxy_dhcp_leases: /var/lib/dhcp/dhcpd.leases

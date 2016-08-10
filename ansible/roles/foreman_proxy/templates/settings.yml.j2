@@ -1,0 +1,48 @@
+---
+# {{ ansible_managed }}
+
+#replace default location of "settings.d"
+:settings_directory: /etc/foreman-proxy/settings.d
+
+# SSL Setup
+# If enabled, all communication would be verified via SSL
+# NOTE that both certificates need to be signed by the same CA in order for this to work
+# see http://theforeman.org/projects/smart-proxy/wiki/SSL for more information
+#:ssl_certificate: ssl/certs/fqdn.pem
+#:ssl_ca_file: ssl/certs/ca.pem
+#:ssl_private_key: ssl/private_keys/fqdn.key
+
+# Hosts which the proxy accepts connections from
+# commenting the following lines would mean every verified SSL connection allowed
+#:trusted_hosts:
+#- foreman.prod.domain
+#- foreman.dev.domain
+
+:foreman_url: {{ foreman_proxy_foreman_url }}
+
+# by default smart_proxy runs in the foreground. To enable running as a daemon, uncomment 'daemon' setting
+:daemon: true
+# Only used when 'daemon' is set to true.
+# Uncomment and modify if you want to change the default pid file '/var/run/foreman-proxy/foreman-proxy.pid'
+:daemon_pid: /var/run/foreman-proxy/foreman-proxy.pid
+
+# HTTP ports configuration
+# http is disabled by default. To enable, uncomment 'http_port' setting
+#:http_port: 8000
+# https is enabled if certificate, CA certificate, and private key are present in locations specifed by
+# ssl_certificate, ssl_ca_file, and ssl_private_key correspondingly
+# default values for https_port is 8443
+#:https_port: 8443
+
+:{{ foreman_proxy_protocol }}_port: {{ foreman_proxy_port }}
+:bind_host: {{ foreman_proxy_bind_host }}
+
+# Shared options for virsh DNS/DHCP provider
+:virsh_network: default
+
+# Log configuration
+# Uncomment and modify if you want to change the location of the log file or use STDOUT
+:log_file: /var/log/foreman-proxy/proxy.log
+# Uncomment and modify if you want to change the log level
+# WARN, DEBUG, ERROR, FATAL, INFO, UNKNOWN
+:log_level: ERROR

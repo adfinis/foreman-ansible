@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+
+omapi-port {{ isc_dhcp_server_omapi_port }};
+ddns-update-style none;
+
+default-lease-time 600;
+max-lease-time 7200;
+log-facility local7;
+
+{% for item in isc_dhcp_server_subnet %}
+subnet {{ item.netaddress }} netmask {{ item.netmask }} {
+	option routers               {{ item.gateway }};
+	option domain-name           "{{ item.domain }}";
+	option domain-search         "{{ item.domain_search }}";
+	option domain-name-servers   {{ item.dns }};
+        range                        {{ item.range }};
+}
+
+{% endfor %}

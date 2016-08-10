@@ -1,0 +1,7 @@
+---
+- name: install nginx
+  package: name="{{ item }}" state=present
+  with_items: "{{ nginx_pkg }}"
+
+- name: enable nginx service
+  service: name=nginx enabled=yes

@@ -1,0 +1,12 @@
+---
+foreman_proxy_pkg:
+  - foreman-proxy
+  - wget
+
+foreman_proxy_extra_repos_pkg:
+  - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm"
+  - foreman-release-scl
+
+foreman_proxy_dhcp_config_dir: /etc/dhcp
+foreman_proxy_dhcp_config: /etc/dhcp/dhcpd.conf
+foreman_proxy_dhcp_leases: /var/lib/dhcpd/dhcpd.leases

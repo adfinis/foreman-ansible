@@ -1,0 +1,20 @@
+---
+tftp_user: tftp
+tftp_group: tftp
+
+tftp_dir: /srv/tftp
+
+tftp_pxe_dir:
+  - boot
+  - pxelinux.cfg
+
+tftp_hpa_address: "0.0.0.0:69"
+tftp_hpa_options: --secure
+
+tftp_xinetd_socket_type: dgram
+tftp_xinetd_protocol: udp
+tftp_xinetd_wait: "yes"
+tftp_xinetd_service_user: root
+tftp_xinetd_server: /usr/sbin/in.tftpd
+tftp_xinetd_server_args: "--user {{ tftp_user }} --secure {{ tftp_dir }}"
+tftp_xinetd_disable: "no"

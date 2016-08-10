@@ -1,0 +1,37 @@
+---
+foreman_apt_main_baseurl: "http://deb.theforeman.org/"
+foreman_apt_main_release: stable
+foreman_apt_main_os_version: "{{ ansible_distribution_release }}"
+foreman_apt_main_gpg: 1
+foreman_apt_main_key: "http://deb.theforeman.org/pubkey.gpg"
+
+foreman_apt_plugins_baseurl: "http://deb.theforeman.org/"
+foreman_apt_plugins_release: stable
+foreman_apt_plugins_os_version: plugins
+foreman_apt_plugins_gpg: 1
+foreman_apt_plugins_key: "http://deb.theforeman.org/pubkey.gpg"
+
+foreman_yum_main_baseurl: "http://yum.theforeman.org/releases/latest/el{{ ansible_distribution_major_version }}/$basearch/"
+foreman_yum_main_gpg: 1
+foreman_yum_main_key: "http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman"
+
+foreman_yum_plugins_baseurl: "http://yum.theforeman.org/plugins/latest/el{{ ansible_distribution_major_version }}/$basearch/"
+foreman_yum_plugins_gpg: 1
+foreman_yum_plugins_key: "http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman"
+
+foreman_plugins_repo: true
+foreman_enable_service: false
+
+foreman_db_adapter: mysql2
+foreman_db_name: foreman
+foreman_db_sqlite_dir: /var/lib/foreman/db
+foreman_db_username: foreman
+foreman_db_password: foreman
+foreman_db_host: localhost
+foreman_db_pool: 5
+foreman_db_timeout: 5000
+
+foreman_domain: "{{ ansible_domain }}"
+foreman_fqdn: "{{ ansible_fqdn }}"
+foreman_admin_password: foreman
+foreman_admin_email: "admin@{{ ansible_fqdn }}"

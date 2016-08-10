@@ -1,0 +1,18 @@
+---
+passenger_nginx_pkg:
+  - nginx-extras
+  - passenger
+
+passenger_nginx_cfg_dir: /etc/nginx/conf.d
+passenger_nginx_default_site:
+  - /etc/nginx/sites-enabled/default
+  - /etc/nginx/sites-available/default
+passenger_nginx_user: www-data
+
+passenger_nginx_passenger_root: /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini
+passenger_nginx_passenger_ruby: /usr/bin/foreman-ruby
+passenger_nginx_passenger_registry: /tmp
+passenger_nginx_passenger_app_root: /usr/share/foreman/public
+
+passenger_nginx_passenger_user: foreman
+passenger_nginx_passenger_group: foreman

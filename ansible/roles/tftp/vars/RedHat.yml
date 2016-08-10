@@ -1,0 +1,13 @@
+---
+tftp_pkg:
+  - tftp-server
+  - xinetd
+  - syslinux
+
+tftp_service: xinetd
+
+tftp_syslinux_binary:
+  - /usr/share/syslinux/pxelinux.0
+  - /usr/share/syslinux/gpxelinux.0
+  - /usr/share/syslinux/menu.c32
+  - /usr/share/syslinux/chain.c32

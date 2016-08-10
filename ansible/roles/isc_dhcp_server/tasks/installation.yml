@@ -1,0 +1,7 @@
+---
+- name: install isc-dhcp-server
+  package: name="{{ item }}" state=present
+  with_items: "{{ isc_dhcp_server_pkg }}"
+
+- name: enable isc-dhcp-server service
+  service: name="{{ isc_dhcp_server_service }}" enabled=yes

@@ -1,0 +1,12 @@
+---
+tftp_pkg:
+  - tftpd-hpa
+  - syslinux
+
+tftp_service: tftpd-hpa
+
+tftp_syslinux_binary:
+  - /usr/lib/syslinux/pxelinux.0
+  - /usr/lib/syslinux/gpxelinux.0
+  - /usr/lib/syslinux/menu.c32
+  - /usr/lib/syslinux/chain.c32

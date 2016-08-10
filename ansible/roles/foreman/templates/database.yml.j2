@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+production:
+  adapter: {{ foreman_db_adapter }}
+{% if foreman_db_adapter == "sqlite3" %}
+  database: {{ foreman_db_sqlite_dir }}/{{ foreman_db_name }}
+  pool: {{ foreman_db_pool }}
+  timeout: {{ foreman_db_timeout }}
+{%- endif %}
+{%- if foreman_db_adapter == "mysql2" or foreman_db_adapter == "postgresql" %}
+  database: {{ foreman_db_name }}
+  username: {{ foreman_db_username }}
+  password: {{ foreman_db_password }}
+  host: {{ foreman_db_host }}
+{% endif %}
+{% if foreman_db_adapter == "mysql2" %}
+  socket: {{ foreman_db_socket }}
+{%- endif %}

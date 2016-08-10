@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+[foreman]
+name=foreman_repo
+baseurl={{ foreman_yum_main_baseurl }}
+gpgcheck={{ foreman_yum_main_gpg }}
+enabled=1

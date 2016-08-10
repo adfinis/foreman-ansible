@@ -1,0 +1,7 @@
+---
+- name: install foreman-proxy
+  package: name="{{ item }}" state=present
+  with_items: "{{ foreman_proxy_pkg }}"
+
+- name: enable foreman-proxy service
+  service: name=foreman-proxy enabled=yes

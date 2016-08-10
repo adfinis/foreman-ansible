@@ -1,0 +1,7 @@
+---
+foreman_yml_api_url: "http://localhost:80"
+foreman_yml_api_username: admin
+foreman_yml_api_password: foreman
+
+foreman_yml_template: foreman_config.yml.j2
+foreman_yml_config: "{{ lookup('template', '{{ foreman_yml_template }}') }}"

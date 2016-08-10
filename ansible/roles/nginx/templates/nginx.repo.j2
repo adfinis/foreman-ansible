@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+{% if ansible_distribution == "RedHat" %}
+{% set distribution = "rhel" %}
+{% else %}
+{% set distribution = ansible_distribution %}
+{% endif %}
+[nginx]
+name=upstream_nginx
+baseurl={{ nginx_upstream_repo_baseurl }}/{{ distribution | lower }}/{{ ansible_distribution_major_version }}/$basearch/
+gpgcheck=1
+enabled=1

@@ -1,0 +1,3 @@
+[submodule "ansible/roles/foreman_yml/files/foreman-yml"]
+	path = ansible/roles/foreman_yml/files/foreman-yml
+	url = https://github.com/adfinis-sygroup/foreman-yml.git

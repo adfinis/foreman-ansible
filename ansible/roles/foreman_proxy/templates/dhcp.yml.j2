@@ -1,0 +1,14 @@
+---
+# {{ ansible_managed }}
+
+# Can be true, false, or http/https to enable just one of the protocols
+:enabled: {{ foreman_proxy_dhcp_protocol }}
+
+# valid providers:
+#   - dhcp_isc (ISC dhcp server)
+#   - dhcp_native_ms (Microsoft native implementation)
+#   - dhcp_virsh (simple implementation for libvirt)
+:use_provider: dhcp_isc
+:server: {{ foreman_proxy_dhcp_server }}
+# subnets restricts the subnets queried to a subset, to reduce the query time.
+:subnets: {{ foreman_proxy_dhcp_subnets }}
