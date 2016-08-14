@@ -1,6 +1,9 @@
-========================
-Foreman Ansible Playbook
-========================
+======================================
+Foreman Ansible Playbook |LicenseImg|_
+======================================
+
+.. |LicenseImg| image:: https://img.shields.io/github/license/adfinis-sygroup/foreman-ansible.svg?style=flat-square
+.. _LicenseImg: LICENSE
 
 Ansible playbook to deploy a complete up and running Foreman instance within
 minutes.
