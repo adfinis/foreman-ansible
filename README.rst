@@ -1,9 +1,9 @@
-======================================
-Foreman Ansible Playbook |LicenseImg|_
-======================================
+==================================
+Foreman Ansible Playbook |License|
+==================================
 
-.. |LicenseImg| image:: https://img.shields.io/github/license/adfinis-sygroup/foreman-ansible.svg?style=flat-square
-.. _LicenseImg: LICENSE
+.. |License| image:: https://img.shields.io/github/license/adfinis-sygroup/foreman-ansible.svg?style=flat-square
+   :target: LICENSE
 
 Ansible playbook to deploy a complete up and running Foreman instance within
 minutes.
@@ -72,8 +72,8 @@ Below the required steps to execute the default playbook:
 6. After a successful deployment you should be able to access Foreman through 
    http://$TARGET_IP/.
 
-The password of the `admin` user is by default set to `foreman`. In addition
-`safemode_render` is changed to `false`.
+The password of the ``admin`` user is by default set to ``foreman``. In addition
+``safemode_render`` is changed to ``false``.
 
 Examples
 ========
