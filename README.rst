@@ -90,7 +90,7 @@ create any users or databases by default.
 
 Roles
 =====
-Below a short overview of all roles:
+Below a short overview of all included roles:
 
 +-----------------+----------------------------------------------------+
 | Name            | Description                                        |
