@@ -1,7 +1,11 @@
-==================================
-Foreman Ansible Playbook |License|
-==================================
+========================
+Foreman Ansible Playbook
+========================
 
+|Travis| |License|
+
+.. |Travis| image:: https://img.shields.io/travis/adfinis-sygroup/foreman-ansible.svg?style=flat-square
+   :target: https://travis-ci.org/adfinis-sygroup/foreman-ansible
 .. |License| image:: https://img.shields.io/github/license/adfinis-sygroup/foreman-ansible.svg?style=flat-square
    :target: LICENSE
 
