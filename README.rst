@@ -1,11 +1,13 @@
-===========================================
-Foreman Ansible Playbook |License| |Travis|
-===========================================
+========================
+Foreman Ansible Playbook
+========================
 
+|Travis| |License|
+
+.. |Travis| image:: https://img.shields.io/travis/adfinis-sygroup/foreman-ansible.svg?style=flat-square
+   :target: https://travis-ci.org/adfinis-sygroup/foreman-ansible
 .. |License| image:: https://img.shields.io/github/license/adfinis-sygroup/foreman-ansible.svg?style=flat-square
    :target: LICENSE
-.. |Travis| image:: https://travis-ci.org/adfinis-sygroup/foreman-ansible.svg?branch=master
-   :target: https://travis-ci.org/adfinis-sygroup/foreman-ansible
 
 Ansible playbook to deploy a complete up and running Foreman instance within
 minutes.
