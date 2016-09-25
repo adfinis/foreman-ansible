@@ -1,19 +1,28 @@
 ---
 - name: rake create foreman apipie cache (be patient)
-  command: "/usr/sbin/foreman-rake apipie:cache"
+  command:
+    "/usr/sbin/foreman-rake apipie:cache"
 
 - name: install foreman-yml dependencies
-  package: name="{{ item }}" state=present
+  package:
+    name="{{ item }}"
+    state=present
   with_items: "{{ foreman_yml_pkg }}"
 
 - name: copy foreman-yml files to the target machine
-  copy: src=foreman-yml dest=/opt/
+  copy:
+    src=foreman-yml
+    dest=/opt/
 
 - name: python setup foreman-yml script
-  command: /usr/bin/python2 setup.py install chdir=/opt/foreman-yml/
+  command:
+    /usr/bin/python2 setup.py install chdir=/opt/foreman-yml/
 
 - name: copy template to target machine
-  copy: content="{{ foreman_yml_config }}" dest="/opt/foreman-yml/foreman_config.yml"
+  copy:
+    content="{{ foreman_yml_config }}"
+    dest="/opt/foreman-yml/foreman_config.yml"
 
 - name: configure foreman with foreman-yml
-  shell: "foreman-yml /opt/foreman-yml/foreman_config.yml > /opt/foreman-yml/ansible.log"
+  shell:
+    "foreman-yml /opt/foreman-yml/foreman_config.yml > /opt/foreman-yml/ansible.log"

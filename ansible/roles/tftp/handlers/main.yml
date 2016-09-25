@@ -1,3 +1,5 @@
 ---
 - name: restart tftp
-  service: name="{{ tftp_service }}" state=restarted
+  service:
+    name="{{ tftp_service }}"
+    state=restarted

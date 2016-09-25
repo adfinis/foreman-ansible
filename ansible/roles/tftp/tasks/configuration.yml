@@ -1,33 +1,60 @@
 ---
 - name: add tftp group
-  group: name="{{ tftp_group }}" system=yes state=present
+  group:
+    name="{{ tftp_group }}"
+    system=yes
+    state=present
 
 - name: add tftp user
-  user: name="{{ tftp_user }}" group="{{ tftp_group }}" system=yes createhome=no
-    password=! shell=/bin/false state=present
+  user:
+    name="{{ tftp_user }}"
+    group="{{ tftp_group }}"
+    system=yes
+    createhome=no
+    password=!
+    shell=/bin/false
+    state=present
 
 - name: create tftp directory
-  file: path="{{ tftp_dir }}" mode=0755 state=directory
+  file:
+    path="{{ tftp_dir }}"
+    mode=0755
+    state=directory
  
 - name: create tftp pxe directories
-  file: path="{{ tftp_dir }}/{{ item }}" mode=0755 state=directory
+  file:
+    path="{{ tftp_dir }}/{{ item }}"
+    mode=0755
+    state=directory
   with_items: "{{ tftp_pxe_dir }}"
 
 - name: copy syslinux binaries to tftp directory
-  copy: src="{{ item }}" dest="{{ tftp_dir }}" remote_src=yes mode=0644
+  copy:
+    src="{{ item }}"
+    dest="{{ tftp_dir }}"
+    remote_src=yes
+    mode=0644
   with_items: "{{ tftp_syslinux_binary }}"
 
 - name: template tftpd-hpa config
-  template: src=default_tftpd_hpa.j2 dest=/etc/default/tftpd-hpa backup=yes
+  template:
+    src=default_tftpd_hpa.j2
+    dest=/etc/default/tftpd-hpa
+    backup=yes
   notify:
     - restart tftp
   when: ansible_os_family == "Debian"
 
 - name: template xinetd tftp config
-  template: src=xinetd_tftp.j2 dest=/etc/xinetd.d/tftp backup=yes
+  template:
+    src=xinetd_tftp.j2
+    dest=/etc/xinetd.d/tftp
+    backup=yes
   notify:
     - restart tftp
   when: ansible_os_family == "RedHat"
 
 - name: start tftp service
-  service: name="{{ tftp_service }}" state=started
+  service:
+    name="{{ tftp_service }}"
+    state=started
