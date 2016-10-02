@@ -1,7 +1,11 @@
 ---
 - name: install tftp
-  package: name="{{ item }}" state=present
+  package:
+    name="{{ item }}"
+    state=present
   with_items: "{{ tftp_pkg }}"
 
 - name: enable tftp service
-  service: name="{{ tftp_service }}" enabled=yes
+  service:
+    name="{{ tftp_service }}"
+    enabled=yes

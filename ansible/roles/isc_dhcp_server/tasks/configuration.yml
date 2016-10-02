@@ -1,8 +1,13 @@
 ---
 - name: template isc-dhcp-server dhcpd.conf
-  template: src=dhcpd.conf.j2 dest=/etc/dhcp/dhcpd.conf backup=yes
+  template:
+    src=dhcpd.conf.j2
+    dest=/etc/dhcp/dhcpd.conf
+    backup=yes
   notify:
     - restart isc-dhcp-server
 
 - name: start isc-dhcp-server service
-  service: name="{{ isc_dhcp_server_service }}" state=started
+  service:
+    name="{{ isc_dhcp_server_service }}"
+    state=started

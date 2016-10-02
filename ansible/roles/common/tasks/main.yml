@@ -1,4 +1,5 @@
 ---
 - name: update apt cache
-  apt: update_cache=yes
+  apt:
+    update_cache=yes
   when: ansible_pkg_mgr == "apt"
