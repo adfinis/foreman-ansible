@@ -27,6 +27,8 @@ which provide the following features:
 * setup foreman-proxy
 * setup Foreman including configuration (templates, hosts, domains, etc.)
 
+If you want to use Postgres as a database, please check https://github.com/invicnaper/foreman-ansible-postgres
+
 **None of the roles will install Puppet or use the official foreman-installer,
 instead the plain Foreman packages are used!**
 
