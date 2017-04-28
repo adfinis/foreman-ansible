@@ -1,0 +1,30 @@
+# PostgreSQL support
+# @ author : Hamza Bourrahim
+# Done for ABlogix
+---
+pgsql_pkg:
+  - postgresql-server
+  - postgresql-contrib
+  - python-psycopg2
+
+pgsql_service: postgresql
+
+pgsql_initdb_command: postgresql-setup initdb
+
+pgsql_conf_file: /var/lib/pgsql/data/postgresql.conf
+
+pgsql_hba_file: /var/lib/pgsql/data/pg_hba.conf
+
+pgsql_template_conf: postgresql_centos.conf
+
+pgsql_template_hba: pg_hba_centos.conf
+
+pgsql_root_user_hosts:
+  - localhost
+  - 127.0.0.1
+  - "::1"
+  - "{{ ansible_fqdn }}"
+
+pgsql_anon_user_hosts:
+  - localhost
+  - "{{ ansible_fqdn }}"

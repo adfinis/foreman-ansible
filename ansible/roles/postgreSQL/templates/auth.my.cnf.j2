@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+[pgsql]
+prompt="postgres=# "
+
+[client]
+user = {{ pgsql_root_username }}
+password = {{ pgsql_root_password }}

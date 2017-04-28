@@ -1,0 +1,45 @@
+# PostgreSQL support
+# @ author : Hamza Bourrahim
+# Done for ABlogix
+---
+- name: create pgsql databases
+  postgresql_db:
+    name="{{ item.name }}"
+    collation="{{ item.collation }}"
+    encoding="{{ item.encoding }}"
+    state=present
+  with_items: "{{ pgsql_databases }}"
+
+- name: create pgsql users
+  postgresql_user:
+    name="{{ item.name }}"
+    host="{{ item.host }}"
+    password="{{ item.password }}"
+    priv="{{ item.priv }}"
+    state=present
+  with_items: "{{ pgsql_users }}"
+
+
+- name: restart pgsql service
+  service:
+    name="{{ pgsql_service }}"
+    state=restarted
+
+- name: ensure database is created
+  postgresql_db:
+    name="{{ pgsql_dbname }}"
+
+- name: create foreman role
+  postgresql_user:
+    name="{{ pgsql_foreman_user }}"
+    password="{{ pgsql_foreman_pass }}"
+    state=present
+
+- name: ensure user has access to database
+  postgresql_user: db="{{ pgsql_dbname }}" name="{{ pgsql_foreman_user }}" password="{{ pgsql_foreman_pass }}" priv=ALL
+
+- name: ensure user does not have unnecessary privilege
+  postgresql_user: name="{{ pgsql_root_username }}" role_attr_flags=NOSUPERUSER,NOCREATEDB
+
+- name: ensure no other user can access the database
+  postgresql_privs: db="{{ pgsql_dbname }}" role=PUBLIC type=database priv=ALL state=absent

@@ -1,0 +1,25 @@
+# PostgreSQL support
+# @ author : Hamza Bourrahim
+# Done for ABlogix
+---
+pgsql_dbname: foreman
+pgsql_root_username: postgres
+pgsql_root_password: postgres
+pgsql_foreman_user: foreman
+pgsql_foreman_pass: foreman
+
+pgsql_databases: []
+pgsql_users: []
+
+postgresql:
+  version: 9.5
+  user: postgres
+  group: postgres
+  config:
+    shared_buffers: 24MB
+    work_mem: 1MB
+
+    checkpoint_segments: 3
+    checkpoint_completion_target: 0.5
+
+    effective_cache_size: 128MB

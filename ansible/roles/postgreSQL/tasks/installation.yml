@@ -1,0 +1,35 @@
+# PostgreSQL support
+# @ author : Hamza Bourrahim
+# Done for ABlogix
+---
+- name: install pgsql
+  package:
+    name="{{ item }}"
+    state=present
+  with_items: "{{ pgsql_pkg }}"
+  register: pgsql_installed
+
+- name: init pgsql DB
+  command: "{{ pgsql_initdb_command }}"
+  become: true
+  ignore_errors: True
+
+- name: Install PostgreSQL config file
+  template: src="{{ pgsql_template_conf }}"
+            dest="{{ pgsql_conf_file }}"
+            owner={{ postgresql.user }} group={{ postgresql.group }}
+
+- name: Install PostgreSQL hba file
+  template: src="{{ pgsql_template_hba }}"
+            dest="{{ pgsql_hba_file }}"
+            owner={{ postgresql.user }} group={{ postgresql.group }}
+
+- name: enable pgsql service
+  service:
+    name="{{ pgsql_service }}"
+    enabled=yes
+
+- name: start pgsql service
+  service:
+    name="{{ pgsql_service }}"
+    state=started
