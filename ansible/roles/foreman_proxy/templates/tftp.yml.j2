@@ -8,3 +8,7 @@
 
 # Defines the TFTP Servername to use, overrides the name in the subnet declaration
 #:tftp_servername: tftp.domain.com
+
+{% if foreman_proxy_tftp_host is defined %}
+:tftp_servername: {{ foreman_proxy_tftp_host }}
+{% endif %}
