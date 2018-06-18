@@ -2,7 +2,6 @@
 foreman_pkg: foreman
 foreman_extra_repos_pkg:
   - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
-  - foreman-release-scl
 
 foreman_db_sqlite_adapter_pkg: foreman-sqlite
 foreman_db_mysql_adapter_pkg: foreman-mysql2

@@ -47,6 +47,18 @@
     dest=/etc/yum.repos.d/foreman_plugins.repo
   when: ansible_os_family == "RedHat" and foreman_plugins_repo 
 
+- name: configure foreman ror51 rpm key
+  rpm_key:
+    key="{{ foreman_yum_ror51_key }}"
+    state=present
+  when: ansible_distribution == "RedHat" and foreman_yum_ror51_gpg and foreman_ror51_repo
+
+- name: configure foreman ror51 yum repository
+  template:
+    src=foreman_ror51.repo.j2
+    dest=/etc/yum.repos.d/foreman_ror51.repo
+  when: ansible_distribution == "RedHat" and foreman_ror51_repo
+
 - name: configure additional repositories
   package:
     name="{{ item }}"
