@@ -22,6 +22,10 @@ foreman_yum_plugins_key: "http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-
 foreman_plugins_repo: true
 foreman_enable_service: false
 
+foreman_ldap: false
+foreman_ldap_cert:
+foreman_ldap_cert_file: example_com_ldap_ca_cert.crt
+
 foreman_db_adapter: mysql2
 foreman_db_name: foreman
 foreman_db_sqlite_dir: /var/lib/foreman/db

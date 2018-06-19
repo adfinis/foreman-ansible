@@ -9,3 +9,5 @@ foreman_db_mysql_adapter_pkg: foreman-mysql2
 foreman_db_pgsql_adapter_pkg: foreman-postgresql
 
 foreman_db_socket: /var/lib/mysql/mysql.sock 
+
+foreman_ldap_cert_dir: /etc/pki/ca-trust/source/anchors
