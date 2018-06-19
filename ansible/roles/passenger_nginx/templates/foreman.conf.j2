@@ -60,9 +60,5 @@ server {
         passenger_group   {{ passenger_nginx_passenger_group }};
         root              {{ passenger_nginx_passenger_app_root }};
     }
-
-    location /roche {
-        alias  /usr/share/nginx/roche;
-    }
 }
 {%- endif %}

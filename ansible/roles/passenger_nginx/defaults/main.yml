@@ -21,7 +21,7 @@ passenger_nginx_yum_repo_gpgcheck: 0
 
 passenger_nginx_server_name: "{{ ansible_fqdn }}"
 
-passenger_nginx_ssl: true
+passenger_nginx_ssl: false
 passenger_nginx_ssl_cert:
 passenger_nginx_ssl_cert_file: www_example_com.crt
 passenger_nginx_ssl_key:
