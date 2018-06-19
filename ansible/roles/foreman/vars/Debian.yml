@@ -9,3 +9,5 @@ foreman_db_pgsql_adapter_pkg: foreman-postgresql
 foreman_db_socket: /var/run/mysqld/mysqld.sock
 
 foreman_ldap_cert_dir: /usr/loca/share/ca-certificates
+
+foreman_ca_update_bin: /usr/sbin/update-ca-certificates

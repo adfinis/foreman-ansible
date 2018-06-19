@@ -22,10 +22,6 @@
   when: foreman_ldap
   register: foreman_register_ldap
 
-- name: trigger update-ca-trust
-  command: /bin/update-ca-trust
-  when: ansible_os_family == "RedHat" and foreman_ldap and foreman_register_ldap.changed
-
-- name: trigger update-ca-certificates
-  command: /usr/sbin/update-ca-certificates
-  when: ansible_os_family == "Debian" and foreman_ldap and foreman_register_ldap.changed
+- name: update ca certificates bundle
+  command: "{{ foreman_ca_update_bin }}"
+  when: foreman_ldap and foreman_register_ldap.changed
