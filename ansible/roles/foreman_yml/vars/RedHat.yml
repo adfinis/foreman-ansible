@@ -1,5 +1,6 @@
 ---
 foreman_yml_pkg:
-  - python-requests
+  - gcc
+  - python-devel
   - python-setuptools
   - PyYAML
