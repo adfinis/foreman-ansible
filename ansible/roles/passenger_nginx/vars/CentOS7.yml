@@ -15,3 +15,4 @@ passenger_nginx_passenger_app_root: /usr/share/foreman/public
 passenger_nginx_passenger_user: foreman
 passenger_nginx_passenger_group: foreman
 
+passenger_nginx_ssl_cert_dir: /etc/pki/tls/private

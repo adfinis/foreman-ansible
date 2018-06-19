@@ -1,4 +1,22 @@
 ---
+- name: configure ssl certificate
+  copy:
+    content="{{ passenger_nginx_ssl_cert }}"
+    dest="{{ passenger_nginx_ssl_cert_dir }}/{{ passenger_nginx_ssl_cert_file }}"
+    owner=root
+    group=root
+    mode=0640
+  when: passenger_nginx_ssl
+
+- name: configure ssl key
+  copy:
+    content="{{ passenger_nginx_ssl_key }}"
+    dest="{{ passenger_nginx_ssl_cert_dir }}/{{ passenger_nginx_ssl_key_file }}"
+    owner=root
+    group=root
+    mode=0640
+  when: passenger_nginx_ssl
+
 - name: template nginx.conf
   template:
     src=nginx.conf.j2
@@ -25,3 +43,4 @@
   service:
     name=nginx
     state=restarted
+  when: passenger_nginx_register_installation.changed

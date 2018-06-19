@@ -4,6 +4,7 @@
     name="{{ item }}"
     state=present
   with_items: "{{ passenger_nginx_pkg }}"
+  register: passenger_nginx_register_installation
 
 - name: enable passenger nginx service
   service:
