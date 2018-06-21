@@ -1,58 +1,58 @@
 ---
 - name: template foreman-proxy settings.yml
   template:
-    src=settings.yml.j2
-    dest=/etc/foreman-proxy/settings.yml
-    backup=yes
+    src: settings.yml.j2
+    dest: /etc/foreman-proxy/settings.yml
+    backup: yes
   notify:
     - restart foreman-proxy
 
 - name: template foreman-proxy dhcp.yml
   template:
-    src=dhcp.yml.j2
-    dest=/etc/foreman-proxy/settings.d/dhcp.yml
-    backup=yes
+    src: dhcp.yml.j2
+    dest: /etc/foreman-proxy/settings.d/dhcp.yml
+    backup: yes
   when: foreman_proxy_dhcp
   notify:
     - restart foreman-proxy
 
 - name: template foreman-proxy dhcp_isc.yml
   template:
-    src=dhcp_isc.yml.j2
-    dest=/etc/foreman-proxy/settings.d/dhcp_isc.yml
-    backup=yes
+    src: dhcp_isc.yml.j2
+    dest: /etc/foreman-proxy/settings.d/dhcp_isc.yml
+    backup: yes
   when: foreman_proxy_dhcp
   notify:
     - restart foreman-proxy
 
 - name: fix dhcp config directory permissions
   file:
-    path={{ foreman_proxy_dhcp_config_dir }}
-    mode=0755
-    state=directory
+    path: "{{ foreman_proxy_dhcp_config_dir }}"
+    mode: 0755
+    state: directory
   when: foreman_proxy_dhcp
   notify:
     - restart foreman-proxy
 
 - name: template foreman-proxy tftp.yaml
   template:
-    src=tftp.yml.j2
-    dest=/etc/foreman-proxy/settings.d/tftp.yml
-    backup=yes
+    src: tftp.yml.j2
+    dest: /etc/foreman-proxy/settings.d/tftp.yml
+    backup: yes
   when: foreman_proxy_tftp
   notify:
     - restart foreman-proxy
 
 - name: ensure correct permissions for tftp pxe directories
   file:
-    path="{{ foreman_proxy_tftp_dir }}/{{ item }}"
-    owner="{{ foreman_proxy_user }}"
-    group="{{ foreman_proxy_group }}"
-    state=directory
+    path: "{{ foreman_proxy_tftp_dir }}/{{ item }}"
+    owner: "{{ foreman_proxy_user }}"
+    group: "{{ foreman_proxy_group }}"
+    state: directory
   when: foreman_proxy_tftp
   with_items: "{{ foreman_proxy_tftp_pxe_dir }}"
 
 - name: start foreman-proxy service
   service:
-    name=foreman-proxy
-    state=started
+    name: foreman-proxy
+    state: started

@@ -7,13 +7,13 @@
 
 - name: install sqlite
   package:
-    name="{{ item }}"
-    state=present
+    name: "{{ item }}"
+    state: present
   with_items: "{{ sqlite_pkg }}"
 
 - name: create sqlite db directory
   file:
-    path="{{ sqlite_db_dir }}"
-    mode=0755
-    state=directory
+    path: "{{ sqlite_db_dir }}"
+    mode: 0755
+    state: directory
   when: sqlite_db_create_dir

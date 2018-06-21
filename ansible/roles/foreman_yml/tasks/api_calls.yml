@@ -5,14 +5,14 @@
 
 - name: install foreman-yml dependencies
   package:
-    name="{{ item }}"
-    state=present
+    name: "{{ item }}"
+    state: present
   with_items: "{{ foreman_yml_pkg }}"
 
 - name: copy foreman-yml files to the target machine
   copy:
-    src=foreman-yml
-    dest=/opt/
+    src: foreman-yml
+    dest: /opt/
 
 - name: python setup foreman-yml script
   command:
@@ -20,8 +20,8 @@
 
 - name: copy template to target machine
   copy:
-    content="{{ foreman_yml_config }}"
-    dest="/opt/foreman-yml/foreman_config.yml"
+    content: "{{ foreman_yml_config }}"
+    dest: "/opt/foreman-yml/foreman_config.yml"
 
 - name: configure foreman with foreman-yml
   shell:

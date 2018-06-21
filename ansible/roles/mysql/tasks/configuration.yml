@@ -1,17 +1,17 @@
 ---
 - name: create mysql databases
   mysql_db:
-    name="{{ item.name }}"
-    collation="{{ item.collation }}"
-    encoding="{{ item.encoding }}"
-    state=present
+    name: "{{ item.name }}"
+    collation: "{{ item.collation }}"
+    encoding: "{{ item.encoding }}"
+    state: present
   with_items: "{{ mysql_databases }}"
 
 - name: create mysql users
   mysql_user:
-    name="{{ item.name }}"
-    host="{{ item.host }}"
-    password="{{ item.password }}"
-    priv="{{ item.priv }}"
-    state=present
+    name: "{{ item.name }}"
+    host: "{{ item.host }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv }}"
+    state: present
   with_items: "{{ mysql_users }}"

@@ -1,36 +1,36 @@
 ---
 - name: configure upstream nginx apt key
   apt_key:
-    url="{{ nginx_upstream_repo_key }}"
-    state="{% if nginx_upstream_repo %}present{% else %}absent{% endif %}"
+    url: "{{ nginx_upstream_repo_key }}"
+    state: "{% if nginx_upstream_repo %}present{% else %}absent{% endif %}"
   when: ansible_os_family == "Debian"
 
 - name: configure upstream nginx apt repository
   apt_repository:
-    repo="deb {{ nginx_upstream_repo_baseurl }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} nginx"
-    state="{% if nginx_upstream_repo %}present{% else %}absent{% endif %}"
+    repo: "deb {{ nginx_upstream_repo_baseurl }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} nginx"
+    state: "{% if nginx_upstream_repo %}present{% else %}absent{% endif %}"
   when: ansible_os_family == "Debian"
 
 - name: configure upstream nginx rpm key
   rpm_key:
-    key="{{ nginx_upstream_repo_key }}"
-    state="{% if nginx_upstream_repo %}present{% else %}absent{% endif %}"
+    key: "{{ nginx_upstream_repo_key }}"
+    state: "{% if nginx_upstream_repo %}present{% else %}absent{% endif %}"
   when: ansible_os_family == "RedHat"
 
 - name: configure upstream nginx yum repository
   template:
-    src=nginx.repo.j2
-    dest=/etc/yum.repos.d/nginx.repo
+    src: nginx.repo.j2
+    dest: /etc/yum.repos.d/nginx.repo
   when: ansible_os_family == "RedHat" and nginx_upstream_repo
 
 - name: remove upstream nginx yum repository
   file:
-    path=/etc/yum.repos.d/nginx.repo
-    state=absent
+    path: /etc/yum.repos.d/nginx.repo
+    state: absent
   when: ansible_os_family == "RedHat" and not nginx_upstream_repo
 
 - name: configure centos epel yum repository
   yum:
-    name=epel-release
-    state="{% if not nginx_upstream_repo %}present{% else %}absent{% endif %}"
+    name: epel-release
+    state: "{% if not nginx_upstream_repo %}present{% else %}absent{% endif %}"
   when: ansible_distribution == "CentOS"
