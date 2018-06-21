@@ -15,11 +15,16 @@ foreman_yum_main_baseurl: "http://yum.theforeman.org/releases/latest/el{{ ansibl
 foreman_yum_main_gpg: 1
 foreman_yum_main_key: "http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman"
 
+foreman_yum_ror51_baseurl: "https://copr-be.cloud.fedoraproject.org/results/@theforeman/tfm-ror51/epel-{{ ansible_distribution_major_version }}-$basearch/"
+foreman_yum_ror51_gpg: 1
+foreman_yum_ror51_key: "https://copr-be.cloud.fedoraproject.org/results/@theforeman/tfm-ror51/pubkey.gpg"
+
 foreman_yum_plugins_baseurl: "http://yum.theforeman.org/plugins/latest/el{{ ansible_distribution_major_version }}/$basearch/"
 foreman_yum_plugins_gpg: 1
 foreman_yum_plugins_key: "http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman"
 
 foreman_plugins_repo: true
+foreman_ror51_repo: true
 foreman_enable_service: false
 
 foreman_db_adapter: mysql2
