@@ -1,27 +1,27 @@
 ---
 - name: template nginx.conf
   template:
-    src=nginx.conf.j2
-    dest=/etc/nginx/nginx.conf
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
   notify:
     - restart nginx
 
 - name: remove nginx default.conf
   file:
-    path="{{ item }}"
-    state=absent
+    path: "{{ item }}"
+    state: absent
   with_items: "{{ passenger_nginx_default_site }}"
   notify:
     - restart nginx
 
 - name: template nginx foreman.conf
   template:
-    src=foreman.conf.j2
-    dest="{{ passenger_nginx_cfg_dir }}/foreman.conf"
+    src: foreman.conf.j2
+    dest: "{{ passenger_nginx_cfg_dir }}/foreman.conf"
   notify:
     - restart nginx
 
 - name: restart nginx passenger
   service:
-    name=nginx
-    state=restarted
+    name: nginx
+    state: restarted

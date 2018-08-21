@@ -1,66 +1,66 @@
 ---
 - name: configure foreman apt key
   apt_key:
-    url="{{ foreman_apt_main_key }}"
-    state=present
+    url: "{{ foreman_apt_main_key }}"
+    state: present
   when: ansible_os_family == "Debian" and foreman_apt_main_gpg
 
 - name: configure foreman apt repository
   apt_repository:
-    repo="deb {{ foreman_apt_main_baseurl }} {{ foreman_apt_main_os_version }} {{ foreman_apt_main_release }}"
-    state=present
+    repo: "deb {{ foreman_apt_main_baseurl }} {{ foreman_apt_main_os_version }} {{ foreman_apt_main_release }}"
+    state: present
   when: ansible_os_family == "Debian"
 
 - name: configure foreman plugins apt key
   apt_key:
-    url="{{ foreman_apt_plugins_key }}"
-    state=present
+    url: "{{ foreman_apt_plugins_key }}"
+    state: present
   when: ansible_os_family == "Debian" and foreman_apt_plugins_gpg and foreman_plugins_repo
 
 - name: configure foreman plugins apt repository
   apt_repository:
-    repo="deb {{ foreman_apt_plugins_baseurl }} {{ foreman_apt_plugins_os_version }} {{ foreman_apt_plugins_release }}"
-    state=present
+    repo: "deb {{ foreman_apt_plugins_baseurl }} {{ foreman_apt_plugins_os_version }} {{ foreman_apt_plugins_release }}"
+    state: present
   when: ansible_os_family == "Debian" and foreman_plugins_repo
 
 - name: configure foreman rpm key
   rpm_key:
-    key="{{ foreman_yum_main_key }}"
-    state=present
+    key: "{{ foreman_yum_main_key }}"
+    state: present
   when: ansible_os_family == "RedHat" and foreman_yum_main_gpg
 
 - name: configure foreman yum repository
   template:
-    src=foreman.repo.j2
-    dest=/etc/yum.repos.d/foreman.repo
+    src: foreman.repo.j2
+    dest: /etc/yum.repos.d/foreman.repo
   when: ansible_os_family == "RedHat"
 
 - name: configure foreman plugins rpm key
   rpm_key:
-    key="{{ foreman_yum_plugins_key }}"
-    state=present
+    key: "{{ foreman_yum_plugins_key }}"
+    state: present
   when: ansible_os_family == "RedHat" and foreman_yum_plugins_gpg and foreman_plugins_repo
 
 - name: configure foreman plugins yum repository
   template:
-    src=foreman_plugins.repo.j2
-    dest=/etc/yum.repos.d/foreman_plugins.repo
+    src: foreman_plugins.repo.j2
+    dest: /etc/yum.repos.d/foreman_plugins.repo
   when: ansible_os_family == "RedHat" and foreman_plugins_repo 
 
 - name: configure foreman ror51 rpm key
   rpm_key:
-    key="{{ foreman_yum_ror51_key }}"
-    state=present
+    key: "{{ foreman_yum_ror51_key }}"
+    state: present
   when: ansible_distribution == "RedHat" and foreman_yum_ror51_gpg and foreman_ror51_repo
 
 - name: configure foreman ror51 yum repository
   template:
-    src=foreman_ror51.repo.j2
-    dest=/etc/yum.repos.d/foreman_ror51.repo
+    src: foreman_ror51.repo.j2
+    dest: /etc/yum.repos.d/foreman_ror51.repo
   when: ansible_distribution == "RedHat" and foreman_ror51_repo
 
 - name: configure additional repositories
   package:
-    name="{{ item }}"
-    state=present
+    name: "{{ item }}"
+    state: present
   with_items: "{{ foreman_extra_repos_pkg }}"

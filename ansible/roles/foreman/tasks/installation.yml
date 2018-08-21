@@ -1,27 +1,27 @@
 ---
 - name: install foreman
   package:
-    name="{{ item }}"
-    state=present
+    name: "{{ item }}"
+    state: present
   with_items: "{{ foreman_pkg }}"
 
 - name: install foreman sqlite database adapter
   package:
-    name="{{ item }}"
-    state=present
+    name: "{{ item }}"
+    state: present
   with_items: "{{ foreman_db_sqlite_adapter_pkg }}"
   when: foreman_db_adapter == "sqlite3"
 
 - name: install foreman mysql database adapter
   package:
-    name="{{ item }}"
-    state=present
+    name: "{{ item }}"
+    state: present
   with_items: "{{ foreman_db_mysql_adapter_pkg }}"
   when: foreman_db_adapter == "mysql2"
 
 - name: install foreman postgresql database adapter
   package:
-    name="{{ item }}"
-    state=present
+    name: "{{ item }}"
+    state: present
   with_items: "{{ foreman_db_pgsql_adapter_pkg }}"
   when: foreman_db_adapter == "postgresql"
